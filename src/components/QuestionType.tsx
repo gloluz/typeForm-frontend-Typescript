@@ -8,6 +8,7 @@ export type QuestionTypeTitle = "text" | "note";
 
 export interface QuestionTypeProps {
   type: QuestionTypeTitle;
+  index?: number;
 }
 
 const Minus = styled.div`
@@ -43,18 +44,18 @@ const StyledQuestionType = styled.div<QuestionTypeProps>`
     `}
 `;
 
-const QuestionType = ({ type }: QuestionTypeProps) => {
+const QuestionType = ({ type, index }: QuestionTypeProps) => {
   return (
     <StyledQuestionType type={type}>
       {type === "text" ? (
         <>
-          <span>1</span>
+          <span>{index}</span>
           <Minus />
           <Icon icon="file-text" size={"18px"} />
         </>
       ) : (
         <>
-          <span>2</span>
+          <span>{index}</span>
           <Minus />
           <Icon icon="star" size={"18px"} />
         </>

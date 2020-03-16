@@ -28,6 +28,13 @@ const StyledButton = styled.button<StyledButtonProps>`
   transition: 0.3s all ease;
   outline: none;
 
+  &:disabled {
+    opacity: 0.5;
+    border: none;
+    cursor: not-allowed;
+    
+  }
+
   ${({ hasCenteredIcon, size }) =>
     hasCenteredIcon &&
     size === "small" &&
@@ -55,7 +62,7 @@ const StyledButton = styled.button<StyledButtonProps>`
 
   ${({ color }) => css`
     &:focus {
-      box-shadow: 0 0 0 2px white, 0 0 0 3px ${COLORS[color]};
+      box-shadow: 0 0 0 1px ${COLORS[color]};
     }
   `};
 
@@ -121,6 +128,7 @@ export interface ButtonProps {
   iconBefore?: Icons;
   iconAfter?: Icons;
   iconCenter?: Icons;
+  disabled?: boolean;
   onClick?: () => any;
   [k: string]: any;
 }
@@ -135,6 +143,7 @@ const Button = ({
   onClick,
   size,
   iconSize,
+  disabled,
   ...props
 }: ButtonProps) => {
   return (
@@ -142,6 +151,7 @@ const Button = ({
       appearance={appearance}
       color={color}
       onClick={onClick}
+      disabled={disabled}
       hasCenteredIcon={iconCenter !== undefined}
       size={size || "big"}
       {...props}

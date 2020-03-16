@@ -2,6 +2,8 @@ import React from "react";
 import styled, { css } from "styled-components";
 import { COLORS } from "../constants";
 
+type Rating = 1 | 2 | 3 | 4 | 5;
+
 const StyledRating = styled.div`
   width: 390px;
   height: 70px;
@@ -53,12 +55,12 @@ const StyledButton = styled.button<StyledButtonProps>`
 `;
 
 export interface RatingProps {
-  onChange?: (rating: number) => any;
-  value?: number;
+  onChange?: (rating: Rating) => any;
+  value?: Rating;
 }
 
 const Rating = ({ onChange, value }: RatingProps) => {
-  const ratings = [1, 2, 3, 4, 5];
+  const ratings: Rating[] = [1, 2, 3, 4, 5];
 
   return (
     <StyledRating>
