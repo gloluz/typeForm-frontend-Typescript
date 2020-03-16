@@ -12,8 +12,8 @@ export interface Question {
 export interface QuestionsProps {
   questions: Question[];
   onChangeText: (event: ChangeEvent<HTMLInputElement>, index: number) => any;
-  questionToUp: (index: number) => any;
-  questionToDown: (index: number) => any;
+  moveUpQuestion: (index: number) => any;
+  moveDownQuestion: (index: number) => any;
   removeQuestion: (index: number) => any;
   onAdd: (type: QuestionTypeTitle) => any;
 }
@@ -21,8 +21,8 @@ export interface QuestionsProps {
 const Questions = ({
   questions,
   onChangeText,
-  questionToUp,
-  questionToDown,
+  moveUpQuestion,
+  moveDownQuestion,
   removeQuestion,
   onAdd
 }: QuestionsProps) => {
@@ -51,7 +51,7 @@ const Questions = ({
                 iconSize="28px"
                 style={{ marginLeft: 10 }}
                 disabled={index === 0}
-                onClick={() => questionToUp(index)}
+                onClick={() => moveUpQuestion(index)}
               />
               <Button
                 appearance="bgWhite"
@@ -61,7 +61,7 @@ const Questions = ({
                 iconSize="28px"
                 disabled={index === questions.length - 1}
                 style={{ marginLeft: 10 }}
-                onClick={() => questionToDown(index)}
+                onClick={() => moveDownQuestion(index)}
               />
               <Button
                 appearance="bgWhite"

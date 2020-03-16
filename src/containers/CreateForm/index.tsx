@@ -5,9 +5,9 @@ import Button from "../../components/Button";
 import Flex from "../../components/Flex";
 import { Link } from "react-router-dom";
 import Icon from "../../components/Icon";
-import QuestionType, { QuestionTypeTitle } from "../../components/QuestionType";
+import { QuestionTypeTitle } from "../../components/QuestionType";
 import { BlueBox } from "../../components/BlueBox";
-import { StyledText, Input, TabItem, Tab, QuestionTitleInput } from "./styles";
+import { StyledText, Input, TabItem } from "./styles";
 import Answers, { Answer } from "./Answers";
 import Questions, { Question } from "./Questions";
 
@@ -18,7 +18,7 @@ const CreateForm = () => {
   const [questions, setQuestions] = useState<Question[]>([]);
   const [answers, setAnswers] = useState<Answer[][]>([]);
 
-  const questionToUp = (index: number) => {
+  const moveUpQuestion = (index: number) => {
     const newQuestions = [...questions];
 
     if (index > 0) {
@@ -30,7 +30,7 @@ const CreateForm = () => {
     setQuestions(newQuestions);
   };
 
-  const questionToDown = (index: number) => {
+  const moveDownQuestion = (index: number) => {
     const newQuestions = [...questions];
 
     if (newQuestions.length - 1 > index) {
@@ -159,8 +159,8 @@ const CreateForm = () => {
           <Questions
             questions={questions}
             onChangeText={onChangeText}
-            questionToUp={questionToUp}
-            questionToDown={questionToDown}
+            moveUpQuestion={moveUpQuestion}
+            moveDownQuestion={moveDownQuestion}
             removeQuestion={removeQuestion}
             onAdd={onAdd}
           />
