@@ -4,8 +4,10 @@ import Icon from "../components/Icon";
 import styled, { css } from "styled-components";
 import { COLORS } from "../constants";
 
+export type QuestionTypeTitle = "text" | "note";
+
 export interface QuestionTypeProps {
-  type: "text" | "note";
+  type: QuestionTypeTitle;
 }
 
 const Minus = styled.div`
@@ -23,8 +25,10 @@ const StyledQuestionType = styled.div<QuestionTypeProps>`
   font-size: 18px;
   color: ${COLORS.white};
   border-radius: 5px;
+  height: 40px;
   width: 75px;
   padding: 8px 0;
+  box-sizing: border-box;
 
   ${({ type }) =>
     type === "text" &&

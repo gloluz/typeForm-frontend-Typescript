@@ -3,7 +3,7 @@ import styled, { css } from "styled-components";
 import { COLORS } from "../constants";
 import Icon, { Icons } from "../components/Icon";
 
-export type Appearance = "fill" | "outline" | "text";
+export type Appearance = "fill" | "outline" | "text" | "bgWhite";
 export type Color = keyof typeof COLORS;
 export type Size = "small" | "big";
 
@@ -11,11 +11,13 @@ interface StyledButtonProps {
   appearance: Appearance;
   color: Color;
   size: Size;
+  hasCenteredIcon?: boolean;
 }
 
 const StyledButton = styled.button<StyledButtonProps>`
   border-radius: 5px;
-  padding: 14px 16px;
+  padding: 0 16px;
+  height: 50px;
   border: 1px solid transparent;
   font-family: "Averta", sans-serif;
   font-size: 16px;
@@ -26,11 +28,29 @@ const StyledButton = styled.button<StyledButtonProps>`
   transition: 0.3s all ease;
   outline: none;
 
+  ${({ hasCenteredIcon, size }) =>
+    hasCenteredIcon &&
+    size === "small" &&
+    css`
+      padding: 0;
+      width: 40px;
+      justify-content: center;
+    `}
+
+    ${({ hasCenteredIcon, size }) =>
+      hasCenteredIcon &&
+      size === "big" &&
+      css`
+        padding: 0;
+        width: 50px;
+        justify-content: center;
+      `}
+
   ${({ size }) =>
     size === "small" &&
     css`
       font-size: 14px;
-      padding: 10px 12px;
+      height: 40px;
     `}
 
   ${({ color }) => css`
@@ -80,7 +100,16 @@ const StyledButton = styled.button<StyledButtonProps>`
       }
     `}
 
-  
+  ${({ appearance, color }) =>
+    appearance === "bgWhite" &&
+    css`
+      background: ${COLORS.white};
+      color: ${COLORS[color]};
+
+      &:hover {
+        border-color: ${COLORS[color]};
+      }
+    `}
 `;
 
 export interface ButtonProps {
@@ -88,6 +117,7 @@ export interface ButtonProps {
   appearance: Appearance;
   color: Color;
   size?: Size;
+  iconSize?: string;
   iconBefore?: Icons;
   iconAfter?: Icons;
   iconCenter?: Icons;
@@ -104,6 +134,7 @@ const Button = ({
   iconBefore,
   onClick,
   size,
+  iconSize,
   ...props
 }: ButtonProps) => {
   return (
@@ -111,20 +142,21 @@ const Button = ({
       appearance={appearance}
       color={color}
       onClick={onClick}
+      hasCenteredIcon={iconCenter !== undefined}
       size={size || "big"}
       {...props}
     >
       {iconBefore && (
         <Icon
           icon={iconBefore}
-          size="18px"
+          size={iconSize || "18px"}
           style={{ marginRight: 8, marginLeft: -2 }}
         />
       )}
       {iconCenter && (
         <Icon
           icon={iconCenter}
-          size="18px"
+          size={iconSize || "18px"}
           style={{ marginRight: -2, marginLeft: -2 }}
         />
       )}
@@ -132,7 +164,7 @@ const Button = ({
       {iconAfter && (
         <Icon
           icon={iconAfter}
-          size="18px"
+          size={iconSize || "18px"}
           style={{ marginLeft: 8, marginRight: -2 }}
         />
       )}

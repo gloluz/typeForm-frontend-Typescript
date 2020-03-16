@@ -1,6 +1,7 @@
 import styled, { css } from "styled-components";
 import { COLORS } from "../constants";
 
+export type Color = keyof typeof COLORS;
 export type Icons =
   | "arrow-right"
   | "arrow-left"
@@ -17,7 +18,7 @@ export type Icons =
 export interface IconProps {
   icon: Icons;
   size?: string;
-  color?: string;
+  color?: Color;
 }
 
 const Icon = styled.i<IconProps>`
@@ -35,7 +36,7 @@ const Icon = styled.i<IconProps>`
   ${({ color }) =>
     color &&
     css`
-      color: ${color};
+      color: ${COLORS[color]};
     `}
   
   ${({ icon }) =>

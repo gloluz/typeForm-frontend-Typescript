@@ -3,27 +3,27 @@ import { createGlobalStyle } from "styled-components";
 export const GlobalStyles = createGlobalStyle`
   @font-face {
     font-family: "Helvetica Neue";
-    src: url(./fonts/HelveticaNeueMedium.woff) format("woff");      
+    src: url(/fonts/HelveticaNeueMedium.woff) format("woff");      
   }
 
   @font-face {
     font-family: "Averta";
     src: local('Averta');
-    src: url(./fonts/Averta/Averta.eot);
-    src: url(./fonts/Averta/Averta.eot?#iefix) format("embedded-opentype"),
-      url(./fonts/Averta/Averta.woff2) format("woff2"),
-      url(./fonts/Averta/Averta.woff) format("woff"),
-      url(./fonts/Averta/Averta.ttf) format("truetype"),
-      url(./fonts/Averta/Averta.svg#Averta) format("svg"); 
+    src: url(/fonts/Averta/Averta.eot);
+    src: url(/fonts/Averta/Averta.eot?#iefix) format("embedded-opentype"),
+      url(/fonts/Averta/Averta.woff2) format("woff2"),
+      url(/fonts/Averta/Averta.woff) format("woff"),
+      url(/fonts/Averta/Averta.ttf) format("truetype"),
+      url(/fonts/Averta/Averta.svg#Averta) format("svg"); 
     }
 
   @font-face {
     font-family: "Formnest";
     src: local('Formnest');
-    src: url(./fonts/Formnest/Formnest.eot?#iefix) format("embedded-opentype"), 
-      url(./fonts/Formnest/Formnest.svg#Formnest) format("svg"),
-      url(./fonts/Formnest/Formnest.ttf) format("truetype"),
-      url(./fonts/Formnest/Formnest.woff) format("woff");
+    src: url(/fonts/Formnest/Formnest.eot?#iefix) format("embedded-opentype"), 
+      url(/fonts/Formnest/Formnest.svg#Formnest) format("svg"),
+      url(/fonts/Formnest/Formnest.ttf) format("truetype"),
+      url(/fonts/Formnest/Formnest.woff) format("woff");
   }
 
   body {

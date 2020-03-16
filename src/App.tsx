@@ -1,5 +1,6 @@
 import React from "react";
 import styled from "styled-components";
+import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 
 import { GlobalStyles } from "./styles";
 import Button from "./components/Button";
@@ -13,6 +14,8 @@ import QuestionBox from "./components/QuestionBox";
 import Icon from "./components/Icon";
 import { COLORS } from "./constants";
 import { ReactComponent as Logo } from "../src/assets/Logo.svg";
+import Home from "./containers/Home";
+import CreateForm from "./containers/CreateForm";
 
 const Header = styled.header`
   height: 100px;
@@ -22,15 +25,9 @@ const Header = styled.header`
   align-items: center;
 `;
 
-const BoxText = styled.h2`
-  color: ${COLORS.white};
-  font-size: 22px;
-  margin-top: 10px;
-`;
-
 const App = () => {
   return (
-    <>
+    <Router>
       <GlobalStyles />
       <Header>
         <Container>
@@ -38,24 +35,16 @@ const App = () => {
         </Container>
       </Header>
 
-      <Container width={1190}>
-        <Flex>
-          <Box color="blue">
-            <Flex
-              direction="column"
-              justify="center"
-              align="center"
-              style={{ height: "100%" }}
-            >
-              <Icon icon="add" size="45px" color={COLORS.white} />
-              <BoxText>Nouveau formulaire</BoxText>
-            </Flex>
-          </Box>
-          <QuestionBox question="Votre avis sur l'évènement du 10 février" />
-          <QuestionBox question="Votre avis sur l'évènement du 10 février" />
-        </Flex>
-      </Container>
-    </>
+      <Switch>
+        <Route path="/form/create">
+          <CreateForm />
+        </Route>
+
+        <Route path="/">
+          <Home />
+        </Route>
+      </Switch>
+    </Router>
   );
 };
 
