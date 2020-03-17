@@ -11,6 +11,7 @@ export const Input = styled.input`
   border: 1px solid ${COLORS.silver};
   border-radius: 5px;
   box-sizing: border-box;
+  padding: 0 10px;
 
   &:focus {
     box-shadow: 0 0 0 1px ${COLORS.black};

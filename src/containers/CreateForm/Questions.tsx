@@ -1,13 +1,9 @@
 import React, { ChangeEvent } from "react";
 import { Tab, QuestionTitleInput } from "./styles";
 import Flex from "../../components/Flex";
-import QuestionType, { QuestionTypeTitle } from "../../components/QuestionType";
+import QuestionType from "../../components/QuestionType";
 import Button from "../../components/Button";
-
-export interface Question {
-  type: QuestionTypeTitle;
-  title: string;
-}
+import { Question, QuestionTypeTitle } from "../../types/Question";
 
 export interface QuestionsProps {
   questions: Question[];

@@ -5,11 +5,11 @@ import Button from "../../components/Button";
 import Flex from "../../components/Flex";
 import { Link } from "react-router-dom";
 import Icon from "../../components/Icon";
-import { QuestionTypeTitle } from "../../components/QuestionType";
 import { BlueBox } from "../../components/BlueBox";
 import { StyledText, Input, TabItem } from "./styles";
 import Answers, { Answer } from "./Answers";
-import Questions, { Question } from "./Questions";
+import Questions from "./Questions";
+import { Question, QuestionTypeTitle } from "../../types/Question";
 
 export type TabItem = "questions" | "answers";
 
@@ -117,7 +117,12 @@ const CreateForm = () => {
         </Link>
 
         <Flex direction="row">
-          <Input type="text" name="title" style={{ marginRight: 10 }} />
+          <Input
+            type="text"
+            name="title"
+            style={{ marginRight: 10 }}
+            placeholder="Nom du formulaire"
+          />
           <Button
             appearance="outline"
             color="blue"
@@ -133,9 +138,12 @@ const CreateForm = () => {
             iconCenter="trash"
             style={{ marginRight: 10 }}
           />
-          <Button appearance="fill" color="blue">
-            Répondre
-          </Button>
+
+          <Link to="/form/answer" style={{ textDecoration: "none" }}>
+            <Button appearance="fill" color="blue">
+              Répondre
+            </Button>
+          </Link>
         </Flex>
       </Flex>
 

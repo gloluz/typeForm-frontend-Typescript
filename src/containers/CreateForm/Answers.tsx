@@ -4,11 +4,12 @@ import { Tab, AnswersOfOnePerson, QuestionTitle, AnswerText } from "./styles";
 import Flex from "../../components/Flex";
 import QuestionType from "../../components/QuestionType";
 import Rating from "../../components/Rating";
+import { Rating as RatingTitle } from "../../types/Rating";
 
 export interface AnswerNote {
   type: "note";
   question: string;
-  rating: Rating;
+  rating: RatingTitle;
 }
 
 export interface AnswerText {

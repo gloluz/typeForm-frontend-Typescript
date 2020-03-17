@@ -3,8 +3,7 @@ import React from "react";
 import Icon from "../components/Icon";
 import styled, { css } from "styled-components";
 import { COLORS } from "../constants";
-
-export type QuestionTypeTitle = "text" | "note";
+import { QuestionTypeTitle } from "../types/Question";
 
 export interface QuestionTypeProps {
   type: QuestionTypeTitle;
