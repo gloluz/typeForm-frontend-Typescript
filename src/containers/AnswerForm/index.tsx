@@ -12,6 +12,8 @@ import styled from "styled-components";
 import { COLORS } from "../../constants";
 import { Question } from "../../types/Question";
 import Rating from "../../components/Rating";
+import { Answer, AnswerNote, AnswerText } from "../../types/Answer";
+import { Rating as RatingType } from "../../types/Rating";
 
 const TextArea = styled.textarea`
   background-color: ${COLORS.white};
@@ -40,7 +42,7 @@ export type QuestionScreen = "home" | "question" | "success";
 const AnswerForm = () => {
   const [questionScreen, setQuestionScreen] = useState<QuestionScreen>("home");
   const [questions, setQuestions] = useState<Question[]>([]);
-  // const [answers, setAnswers] = useState
+  const [answers, setAnswers] = useState<Answer[]>([]);
   const [currentQuestion, setCurrentQuestion] = useState<number>(0);
 
   const beginQuestion = () => {
@@ -60,7 +62,49 @@ const AnswerForm = () => {
       setCurrentQuestion(currentQuestion + 1);
     } else {
       setQuestionScreen("success");
+      // to do: appel au back
+      console.log("answers>>>", answers);
     }
+  };
+
+  const addTextAnswer = (text: string, index: number) => {
+    const newAnswers = [...answers];
+
+    newAnswers[index] = {
+      type: "text",
+      text,
+      question: questions[index].title
+    };
+
+    setAnswers(newAnswers);
+  };
+
+  const addRatingAnswer = (rating: RatingType, index: number) => {
+    const newAnswers = [...answers];
+
+    newAnswers[index] = {
+      type: "note",
+      rating,
+      question: questions[index].title
+    };
+
+    setAnswers(newAnswers);
+  };
+
+  const isValidAnswer = () => {
+    const answer = answers[currentQuestion];
+
+    if (!answer) {
+      return false;
+    }
+
+    if (answer.type === "text") {
+      if (answer.text.trim() === "") {
+        return false;
+      }
+    }
+
+    return true;
   };
 
   useEffect(() => {
@@ -115,12 +159,29 @@ const AnswerForm = () => {
               <Title level={1}>{questions[currentQuestion].title}</Title>
 
               {questions[currentQuestion].type === "text" && (
-                <TextArea placeholder="Répondez ici..." />
+                <TextArea
+                  placeholder="Répondez ici..."
+                  onChange={e => addTextAnswer(e.target.value, currentQuestion)}
+                  value={
+                    answers[currentQuestion]
+                      ? (answers[currentQuestion] as AnswerText).text
+                      : undefined
+                  }
+                />
               )}
 
               {questions[currentQuestion].type === "note" && (
                 <Flex align="center" justify="center" style={{ height: 215 }}>
-                  <Rating />
+                  <Rating
+                    onChange={rating =>
+                      addRatingAnswer(rating, currentQuestion)
+                    }
+                    value={
+                      answers[currentQuestion]
+                        ? (answers[currentQuestion] as AnswerNote).rating
+                        : undefined
+                    }
+                  />
                 </Flex>
               )}
             </Flex>
@@ -144,6 +205,7 @@ const AnswerForm = () => {
                 color="blue"
                 iconAfter="arrow-right"
                 onClick={nextScreen}
+                disabled={!isValidAnswer()}
               >
                 Suivant
               </Button>

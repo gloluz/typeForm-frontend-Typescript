@@ -30,9 +30,8 @@ const StyledButton = styled.button<StyledButtonProps>`
 
   &:disabled {
     opacity: 0.5;
-    border: none;
+    border: 1px solid transparent;
     cursor: not-allowed;
-    
   }
 
   ${({ hasCenteredIcon, size }) =>
@@ -61,7 +60,7 @@ const StyledButton = styled.button<StyledButtonProps>`
     `}
 
   ${({ color }) => css`
-    &:focus {
+    &:not(:disabled):focus {
       box-shadow: 0 0 0 1px ${COLORS[color]};
     }
   `};
@@ -73,7 +72,7 @@ const StyledButton = styled.button<StyledButtonProps>`
       border-color: ${COLORS[color]};
       color: ${COLORS.white};
 
-      &:hover {
+      &:not(:disabled):hover {
         background-color: transparent;
         border-color: ${COLORS[color]};
         color: ${COLORS[color]};
@@ -88,7 +87,7 @@ const StyledButton = styled.button<StyledButtonProps>`
       border-color: ${COLORS[color]};
       color: ${COLORS[color]};
 
-      &:hover {
+      &:not(:disabled):hover {
         background-color: ${COLORS[color]};
         border-color: ${COLORS[color]};
         color: ${COLORS.white};
@@ -102,7 +101,7 @@ const StyledButton = styled.button<StyledButtonProps>`
       background: transparent;
       color: ${COLORS[color]};
 
-      &:hover {
+      &:not(:disabled):hover {
         border-color: ${COLORS[color]};
       }
     `}
@@ -113,7 +112,7 @@ const StyledButton = styled.button<StyledButtonProps>`
       background: ${COLORS.white};
       color: ${COLORS[color]};
 
-      &:hover {
+      &:not(:disabled):hover {
         border-color: ${COLORS[color]};
       }
     `}

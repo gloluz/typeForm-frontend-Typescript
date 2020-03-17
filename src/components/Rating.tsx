@@ -56,9 +56,10 @@ const StyledButton = styled.button<StyledButtonProps>`
 export interface RatingProps {
   onChange?: (rating: RatingTitle) => any;
   value?: RatingTitle;
+  readonly?: boolean;
 }
 
-const Rating = ({ onChange, value }: RatingProps) => {
+const Rating = ({ onChange, value, readonly }: RatingProps) => {
   const ratings: RatingTitle[] = [1, 2, 3, 4, 5];
 
   return (
@@ -68,7 +69,7 @@ const Rating = ({ onChange, value }: RatingProps) => {
           onClick={() => onChange && onChange(rating)}
           key={rating}
           isSelected={value === rating}
-          disabled={value !== undefined}
+          disabled={readonly !== undefined && readonly}
         >
           {rating}
         </StyledButton>

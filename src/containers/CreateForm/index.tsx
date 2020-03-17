@@ -7,9 +7,10 @@ import { Link } from "react-router-dom";
 import Icon from "../../components/Icon";
 import { BlueBox } from "../../components/BlueBox";
 import { StyledText, Input, TabItem } from "./styles";
-import Answers, { Answer } from "./Answers";
+import Answers from "./Answers";
 import Questions from "./Questions";
 import { Question, QuestionTypeTitle } from "../../types/Question";
+import { Answer } from "../../types/Answer";
 
 export type TabItem = "questions" | "answers";
 
@@ -17,6 +18,9 @@ const CreateForm = () => {
   const [selectedTab, setSelectedTab] = useState<TabItem>("questions");
   const [questions, setQuestions] = useState<Question[]>([]);
   const [answers, setAnswers] = useState<Answer[][]>([]);
+  const [titleForm, setTitleForm] = useState<string>("");
+
+  console.log("title>>>", titleForm);
 
   const moveUpQuestion = (index: number) => {
     const newQuestions = [...questions];
@@ -58,6 +62,12 @@ const CreateForm = () => {
     newQuestions[index].title = value;
 
     setQuestions(newQuestions);
+  };
+
+  const handleChangeText = (event: ChangeEvent<HTMLInputElement>) => {
+    const value = event.target.value;
+
+    setTitleForm(value);
   };
 
   const onAdd = (type: QuestionTypeTitle) => {
@@ -122,6 +132,8 @@ const CreateForm = () => {
             name="title"
             style={{ marginRight: 10 }}
             placeholder="Nom du formulaire"
+            onChange={handleChangeText}
+            value={titleForm}
           />
           <Button
             appearance="outline"
@@ -140,7 +152,11 @@ const CreateForm = () => {
           />
 
           <Link to="/form/answer" style={{ textDecoration: "none" }}>
-            <Button appearance="fill" color="blue">
+            <Button
+              appearance="fill"
+              color="blue"
+              disabled={titleForm.trim() === ""}
+            >
               Répondre
             </Button>
           </Link>
@@ -171,6 +187,7 @@ const CreateForm = () => {
             moveDownQuestion={moveDownQuestion}
             removeQuestion={removeQuestion}
             onAdd={onAdd}
+            disabled={titleForm.trim() === ""}
           />
         )}
 

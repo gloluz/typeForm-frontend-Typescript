@@ -2,7 +2,6 @@ import { Rating } from "./Rating";
 
 export interface AnswerNote {
   type: "note";
-
   question: string;
   rating: Rating;
 }

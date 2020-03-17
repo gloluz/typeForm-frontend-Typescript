@@ -5,6 +5,7 @@ export const Input = styled.input`
   outline: none;
   height: 50px;
   font-size: 24px;
+  font-weight: bold;
   font-family: "Averta", sans-serif;
   width: 435px;
   color: ${COLORS.black};

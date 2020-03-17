@@ -4,21 +4,7 @@ import { Tab, AnswersOfOnePerson, QuestionTitle, AnswerText } from "./styles";
 import Flex from "../../components/Flex";
 import QuestionType from "../../components/QuestionType";
 import Rating from "../../components/Rating";
-import { Rating as RatingTitle } from "../../types/Rating";
-
-export interface AnswerNote {
-  type: "note";
-  question: string;
-  rating: RatingTitle;
-}
-
-export interface AnswerText {
-  type: "text";
-  question: string;
-  text: string;
-}
-
-export type Answer = AnswerText | AnswerNote;
+import { Answer } from "../../types/Answer";
 
 export interface AnswerProps {
   answers: Answer[][];
@@ -45,7 +31,7 @@ const Answers = ({ answers }: AnswerProps) => {
 
                   {answer.type === "note" && (
                     <div style={{ marginTop: 40, marginBottom: 50 }}>
-                      <Rating value={answer.rating} />
+                      <Rating value={answer.rating} readonly={true} />
                     </div>
                   )}
                 </Flex>
