@@ -2,18 +2,20 @@ import React, { useState, useEffect } from "react";
 
 import Container from "../../components/Container";
 import Flex from "../../components/Flex";
-import { Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import Icon from "../../components/Icon";
-import { StyledText } from "../CreateForm/styles";
+import { StyledText } from "../Form/styles";
 import { BlueBox } from "../../components/BlueBox";
 import Title from "../../components/Title";
 import Button from "../../components/Button";
 import styled from "styled-components";
 import { COLORS } from "../../constants";
-import { Question } from "../../types/Question";
 import Rating from "../../components/Rating";
 import { Answer, AnswerNote, AnswerText } from "../../types/Answer";
 import { Rating as RatingType } from "../../types/Rating";
+import { fetchForm } from "../../services/fetchForm";
+import { Form } from "../../types/Form";
+import { updateForm } from "../../services/updateForm";
 
 const TextArea = styled.textarea`
   background-color: ${COLORS.white};
@@ -39,11 +41,15 @@ const TextArea = styled.textarea`
 
 export type QuestionScreen = "home" | "question" | "success";
 
+const INITIAL_FORM: Form = { title: "", answers: [], questions: [] };
+
 const AnswerForm = () => {
+  const [form, setForm] = useState<Form>(INITIAL_FORM);
   const [questionScreen, setQuestionScreen] = useState<QuestionScreen>("home");
-  const [questions, setQuestions] = useState<Question[]>([]);
   const [answers, setAnswers] = useState<Answer[]>([]);
   const [currentQuestion, setCurrentQuestion] = useState<number>(0);
+
+  const { id } = useParams();
 
   const beginQuestion = () => {
     setQuestionScreen("question");
@@ -57,23 +63,13 @@ const AnswerForm = () => {
     }
   };
 
-  const nextScreen = () => {
-    if (currentQuestion < questions.length - 1) {
-      setCurrentQuestion(currentQuestion + 1);
-    } else {
-      setQuestionScreen("success");
-      // to do: appel au back
-      console.log("answers>>>", answers);
-    }
-  };
-
   const addTextAnswer = (text: string, index: number) => {
     const newAnswers = [...answers];
 
     newAnswers[index] = {
       type: "text",
       text,
-      question: questions[index].title
+      question: form.questions[index].title
     };
 
     setAnswers(newAnswers);
@@ -85,7 +81,7 @@ const AnswerForm = () => {
     newAnswers[index] = {
       type: "note",
       rating,
-      question: questions[index].title
+      question: form.questions[index].title
     };
 
     setAnswers(newAnswers);
@@ -107,17 +103,34 @@ const AnswerForm = () => {
     return true;
   };
 
+  const getForm = async () => {
+    const form = await fetchForm(id as string);
+
+    if (form) {
+      setForm(form);
+    }
+  };
+
+  const saveAnswers = async () => {
+    const newForm = {
+      ...form,
+      answers: [...form.answers, answers]
+    };
+
+    return await updateForm(newForm);
+  };
+
+  const nextScreen = () => {
+    if (currentQuestion < form.questions?.length - 1) {
+      setCurrentQuestion(currentQuestion + 1);
+    } else {
+      setQuestionScreen("success");
+      saveAnswers();
+    }
+  };
+
   useEffect(() => {
-    setQuestions([
-      {
-        title: "Qu'avez vous pensé de l'accueil ?",
-        type: "text"
-      },
-      {
-        title: "Quelle note attribueriez-vous au buffet ?",
-        type: "note"
-      }
-    ]);
+    getForm();
   }, []);
 
   return (
@@ -136,9 +149,9 @@ const AnswerForm = () => {
           <Flex direction="column" justify="center" flex="1">
             <Title level={4}>Sondage</Title>
             <Title level={1} style={{ marginTop: 20, marginBottom: 20 }}>
-              Votre avis sur...
+              {form?.title}
             </Title>
-            <Title level={2}>{questions.length} questions</Title>
+            <Title level={2}>{form.questions.length} questions</Title>
             <Button
               appearance="fill"
               color="blue"
@@ -156,21 +169,21 @@ const AnswerForm = () => {
               <Title level={4} style={{ marginBottom: 15 }}>
                 Question {currentQuestion + 1}
               </Title>
-              <Title level={1}>{questions[currentQuestion].title}</Title>
+              <Title level={1}>{form.questions[currentQuestion].title}</Title>
 
-              {questions[currentQuestion].type === "text" && (
+              {form.questions[currentQuestion].type === "text" && (
                 <TextArea
                   placeholder="Répondez ici..."
                   onChange={e => addTextAnswer(e.target.value, currentQuestion)}
                   value={
                     answers[currentQuestion]
                       ? (answers[currentQuestion] as AnswerText).text
-                      : undefined
+                      : ""
                   }
                 />
               )}
 
-              {questions[currentQuestion].type === "note" && (
+              {form.questions[currentQuestion].type === "note" && (
                 <Flex align="center" justify="center" style={{ height: 215 }}>
                   <Rating
                     onChange={rating =>

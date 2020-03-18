@@ -12,6 +12,7 @@ export interface QuestionsProps {
   moveDownQuestion: (index: number) => any;
   removeQuestion: (index: number) => any;
   onAdd: (type: QuestionTypeTitle) => any;
+  onSave: () => any;
   disabled: boolean;
 }
 
@@ -22,6 +23,7 @@ const Questions = ({
   moveDownQuestion,
   removeQuestion,
   onAdd,
+  onSave,
   disabled
 }: QuestionsProps) => {
   return (
@@ -97,7 +99,12 @@ const Questions = ({
         justify="flex-end"
         style={{ justifySelf: "flex-end", marginTop: 24 }}
       >
-        <Button appearance="fill" color="blue" disabled={disabled}>
+        <Button
+          appearance="fill"
+          color="blue"
+          disabled={disabled}
+          onClick={onSave}
+        >
           Sauvegarder
         </Button>
       </Flex>

@@ -3,7 +3,7 @@ import React, { useState, useEffect, ChangeEvent } from "react";
 import Container from "../../components/Container";
 import Button from "../../components/Button";
 import Flex from "../../components/Flex";
-import { Link } from "react-router-dom";
+import { Link, useParams, useHistory } from "react-router-dom";
 import Icon from "../../components/Icon";
 import { BlueBox } from "../../components/BlueBox";
 import { StyledText, Input, TabItem } from "./styles";
@@ -11,16 +11,21 @@ import Answers from "./Answers";
 import Questions from "./Questions";
 import { Question, QuestionTypeTitle } from "../../types/Question";
 import { Answer } from "../../types/Answer";
+import { postForm } from "../../services/postForm";
+import { fetchForm } from "../../services/fetchForm";
+import { updateForm } from "../../services/updateForm";
+import { deleteForm } from "../../services/deleteForm";
 
 export type TabItem = "questions" | "answers";
 
-const CreateForm = () => {
+const Form = () => {
   const [selectedTab, setSelectedTab] = useState<TabItem>("questions");
   const [questions, setQuestions] = useState<Question[]>([]);
   const [answers, setAnswers] = useState<Answer[][]>([]);
   const [titleForm, setTitleForm] = useState<string>("");
 
-  console.log("title>>>", titleForm);
+  const { id } = useParams();
+  const history = useHistory();
 
   const moveUpQuestion = (index: number) => {
     const newQuestions = [...questions];
@@ -74,46 +79,45 @@ const CreateForm = () => {
     setQuestions([...questions, { title: "", type }]);
   };
 
-  useEffect(() => {
-    setQuestions([
-      {
-        title: "Qu'avez vous pensé de l'accueil ?",
-        type: "text"
-      },
-      {
-        title: "Quelle note attribueriez-vous au buffet ?",
-        type: "note"
-      }
-    ]);
+  const handleForm = () => {
+    if (!id) {
+      postForm({ title: titleForm, questions, answers });
+      history.push("/");
+    } else {
+      updateForm({ title: titleForm, questions, answers, _id: id });
+      history.push("/");
+    }
+  };
 
-    setAnswers([
-      [
-        {
-          type: "text",
-          question: "Qu'avez vous pensé de l'accueil ?",
-          text:
-            "Lorem ipsum dolor sit amet consectetur, adipisicing elit. Voluptate facilis voluptas quibusdam earum odio quod modi libero! Dignissimos aperiam adipisci, reiciendis illum qui quo eligendi ullam sed, quibusdam velit doloremque!"
-        },
-        {
-          type: "note",
-          question: "Quelle note attribueriez-vous au buffet ?",
-          rating: 4
-        }
-      ],
-      [
-        {
-          type: "text",
-          question: "Qu'avez vous pensé de l'accueil ?",
-          text:
-            "Lorem ipsum dolor sit amet consectetur, adipisicing elit. Voluptate facilis voluptas quibusdam earum odio quod modi libero! Dignissimos aperiam adipisci, reiciendis illum qui quo eligendi ullam sed, quibusdam velit doloremque!"
-        },
-        {
-          type: "note",
-          question: "Quelle note attribueriez-vous au buffet ?",
-          rating: 4
-        }
-      ]
-    ]);
+  const getForm = async () => {
+    const form = await fetchForm(id as string);
+
+    if (!form) {
+      history.push("/");
+    } else {
+      setTitleForm(form.title);
+      setQuestions(form.questions || []);
+      setAnswers(form.answers || []);
+    }
+  };
+
+  const deletedForm = async () => {
+    const isSuccess = await deleteForm(id as string);
+
+    if (isSuccess) {
+      history.push("/");
+    } else {
+      alert("Une erreur inconnue est survenue");
+    }
+  };
+
+  useEffect(() => {
+    if (id === undefined) {
+      setQuestions([]);
+      setAnswers([]);
+    } else {
+      getForm();
+    }
   }, []);
 
   return (
@@ -140,6 +144,7 @@ const CreateForm = () => {
             color="blue"
             iconCenter="check"
             iconSize="22px"
+            onClick={handleForm}
           />
         </Flex>
 
@@ -149,9 +154,10 @@ const CreateForm = () => {
             color="pink"
             iconCenter="trash"
             style={{ marginRight: 10 }}
+            onClick={deletedForm}
           />
 
-          <Link to="/form/answer" style={{ textDecoration: "none" }}>
+          <Link to={`/form/${id}/answer`} style={{ textDecoration: "none" }}>
             <Button
               appearance="fill"
               color="blue"
@@ -188,6 +194,7 @@ const CreateForm = () => {
             removeQuestion={removeQuestion}
             onAdd={onAdd}
             disabled={titleForm.trim() === ""}
+            onSave={handleForm}
           />
         )}
 
@@ -197,4 +204,4 @@ const CreateForm = () => {
   );
 };
 
-export default CreateForm;
+export default Form;

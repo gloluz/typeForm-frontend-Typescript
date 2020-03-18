@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 
 import Container from "../components/Container";
@@ -9,6 +9,8 @@ import QuestionBox from "../components/QuestionBox";
 import { COLORS } from "../constants";
 import Title from "../components/Title";
 import { Link } from "react-router-dom";
+import { fetchForms } from "../services/fetchForms";
+import { Form } from "../types/Form";
 
 const BoxText = styled.h2`
   color: ${COLORS.white};
@@ -17,12 +19,26 @@ const BoxText = styled.h2`
 `;
 
 const Home = () => {
+  const [forms, setForms] = useState<Form[]>([]);
+
+  const getForms = async () => {
+    const forms = await fetchForms();
+
+    if (forms) {
+      setForms(forms);
+    }
+  };
+
+  useEffect(() => {
+    getForms();
+  }, []);
+
   return (
     <Container width={1190}>
       <Title level={1} style={{ marginTop: 90, marginBottom: 20 }}>
         Mes formulaires
       </Title>
-      <Flex>
+      <Flex wrap>
         <Box color="blue">
           <Link to="/form/create" style={{ textDecoration: "none" }}>
             <Flex
@@ -36,8 +52,13 @@ const Home = () => {
             </Flex>
           </Link>
         </Box>
-        <QuestionBox question="Votre avis sur l'évènement du 10 février" />
-        <QuestionBox question="Votre avis sur l'évènement du 10 février" />
+        {forms.map(form => (
+          <QuestionBox
+            question={form.title}
+            key={form._id}
+            id={form._id as string}
+          />
+        ))}
       </Flex>
     </Container>
   );

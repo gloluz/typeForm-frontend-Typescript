@@ -7,7 +7,7 @@ import Container from "./components/Container";
 import { COLORS } from "./constants";
 import { ReactComponent as Logo } from "../src/assets/Logo.svg";
 import Home from "./containers/Home";
-import CreateForm from "./containers/CreateForm";
+import Form from "./containers/Form";
 import AnswerForm from "./containers/AnswerForm";
 
 const Header = styled.header`
@@ -29,12 +29,16 @@ const App = () => {
       </Header>
 
       <Switch>
-        <Route path="/form/answer">
+        <Route path="/form/create">
+          <Form />
+        </Route>
+
+        <Route path="/form/:id/answer">
           <AnswerForm />
         </Route>
 
-        <Route path="/form/create">
-          <CreateForm />
+        <Route path="/form/:id">
+          <Form />
         </Route>
 
         <Route path="/">
